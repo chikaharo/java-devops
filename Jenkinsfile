@@ -17,6 +17,7 @@ pipeline {
         }
         stage("Unit test") {
             steps {
+                echo "Testing maven app"
                 // sh "mvn test"
             }
         }
