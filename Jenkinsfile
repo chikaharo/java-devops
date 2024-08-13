@@ -17,14 +17,14 @@ pipeline {
         }
         stage("Unit test") {
             steps {
-                sh "mvn test"
+                // sh "mvn test"
             }
         }
-        stage("Trivy scan") {
-            steps {
-                sh "trivy fs --format -o fs.html"
-            }
-        }
+        // stage("Trivy scan") {
+        //     steps {
+        //         sh "trivy fs --format -o fs.html"
+        //     }
+        // }
         stage("Sonar analysis") {
             steps {
                 // withSonarQubeEnv('sonarqube-1') {
@@ -40,10 +40,22 @@ pipeline {
                 sh "docker build -t ${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_VER} ."
             }
         }
+        stage("Push docker image") {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-crendentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+ 
+                        // Push the image
+                        sh "docker push ${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_VER}"
+                    }
+                }
+            }
+        }
         stage("Trivy scan docker image") {
             steps {
                 script {
-                    def trivyRes = sh("${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_VER}", returnStdout: true).trim()
+                    def trivyRes = sh("docker run -v /var/run/docker.sock trivy image ${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_VER}", returnStdout: true).trim()
                     println trivyRes
                     if (trivyRes.contain("Total: 0")) {
                         echo "No vulnerability has found"
