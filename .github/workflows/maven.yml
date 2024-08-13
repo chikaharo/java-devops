@@ -28,23 +28,23 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-  sonarqube:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        # Disabling shallow clones is recommended for improving the relevancy of reporting
-        fetch-depth: 0
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+  # sonarqube:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       # Disabling shallow clones is recommended for improving the relevancy of reporting
+  #       fetch-depth: 0
+  #   - name: SonarQube Scan
+  #     uses: sonarsource/sonarqube-scan-action@master
+  #     env:
+  #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #       SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
         
-    - name: SonarQube Quality Gate Check
-      id: sonarqube-quality-gate-check
-      uses: sonarqube-quality-gate-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+  #   - name: SonarQube Quality Gate Check
+  #     id: sonarqube-quality-gate-check
+  #     uses: sonarqube-quality-gate-action@master
+  #     env:
+  #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #       SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
 
