@@ -36,6 +36,13 @@ pipeline {
                 }
             }
         }
+        stage("Quality gate") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                }
+            }
+        }
         stage("Build docker image") {
             steps {
                 sh "docker build -t ${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_VER} ."
@@ -56,13 +63,14 @@ pipeline {
         stage("Trivy scan docker image") {
             steps {
                 script {
-                    def trivyRes = sh("docker run -v /var/run/docker.sock trivy image ${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_VER}", returnStdout: true).trim()
-                    println trivyRes
-                    if (trivyRes.contain("Total: 0")) {
-                        echo "No vulnerability has found"
-                    } else {
-                        echo "There are some vulnerability errors"
-                    }
+                    sh "docker run -v /var/run/docker.sock trivy image ${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_VER}"
+                    // def trivyRes = sh("docker run -v /var/run/docker.sock trivy image ${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_VER}", returnStdout: true).trim()
+                    // println trivyRes
+                    // if (trivyRes.contain("Total: 0")) {
+                    //     echo "No vulnerability has found"
+                    // } else {
+                    //     echo "There are some vulnerability errors"
+                    // }
                 }
             }
         }
