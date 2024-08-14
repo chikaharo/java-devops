@@ -52,12 +52,10 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Set short git commit SHA
         id: commit
         uses: prompt/actions-commit-hash@v2
-
-      - name: Check out code
-        uses: actions/checkout@v4
 
       - name: Plan
         id: plan-terraform
