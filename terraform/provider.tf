@@ -1,5 +1,7 @@
 terraform {
 
+ 
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -25,11 +27,7 @@ terraform {
 # 			name = "java-devops"
 # 		}
 # 	}
-# }
-
-terraform { 
-  cloud { 
-    
+ cloud { 
     organization = "HuyDinh" 
 
     workspaces { 
@@ -37,6 +35,17 @@ terraform {
     } 
   } 
 }
+
+# terraform { 
+#   cloud { 
+    
+#     organization = "HuyDinh" 
+
+#     workspaces { 
+#       name = "boardgame" 
+#     } 
+#   } 
+# }
 
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
