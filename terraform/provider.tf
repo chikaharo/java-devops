@@ -17,14 +17,25 @@ terraform {
 
   }
 
-backend "remote" {
-		hostname = "app.terraform.io"
-		organization = "HuyDinh"
+# backend "remote" {
+# 		hostname = "app.terraform.io"
+# 		organization = "HuyDinh"
 
-		workspaces {
-			name = "java-devops"
-		}
-	}
+# 		workspaces {
+# 			name = "java-devops"
+# 		}
+# 	}
+# }
+
+terraform { 
+  cloud { 
+    
+    organization = "HuyDinh" 
+
+    workspaces { 
+      name = "boardgame" 
+    } 
+  } 
 }
 
 data "aws_eks_cluster" "cluster" {
