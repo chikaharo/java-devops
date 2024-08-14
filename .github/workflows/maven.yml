@@ -52,6 +52,13 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     steps:
+      - name: Set short git commit SHA
+        id: commit
+        uses: prompt/actions-commit-hash@v2
+
+      - name: Check out code
+        uses: actions/checkout@v4
+
       - name: Plan
         id: plan-terraform
         uses: ./.github/workflows/aws_tf_plan.yml
