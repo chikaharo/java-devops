@@ -55,13 +55,13 @@ jobs:
     secrets:
       cli_config_credentials_token: ${{ secrets.TFC_API_TOKEN }}
 
-  # Apply:
-  #   needs: Plan
-  #   uses: ./.github/workflows/aws_tf_apply.yml
-  #   with:
-  #     gh_environment: dev
-  #   secrets:
-  #     cli_config_credentials_token: ${{ secrets.TFC_API_TOKEN }}
+  Apply:
+    needs: Plan
+    uses: ./.github/workflows/aws_tf_apply.yml
+    with:
+      gh_environment: dev
+    secrets:
+      cli_config_credentials_token: ${{ secrets.TFC_API_TOKEN }}
 
   # deployment:
   #   runs-on: ubuntu-latest
