@@ -1,10 +1,5 @@
 ### Reusable workflow to download terraform artifact built by `az_tf_plan` and apply the artifact/plan ###
 name: "Apply_TF_Plan"
-# env:
-#   TF_CLOUD_ORGANIZATION: "HuyDinh"
-#   TF_API_TOKEN: "${{ secrets.TFC_API_TOKEN }}"
-#   TF_WORKSPACE: "java-devops"
-#   CONFIG_DIRECTORY: "./terraform/"
 on:
   workflow_call:
     inputs:
@@ -37,28 +32,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      # - name: Upload Configuration
-      #   uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
-      #   id: apply-upload
-      #   with:
-      #     workspace: "java-devops"
-      #     directory: "./terraform"
-
-      # - name: Create Apply Run
-      #   uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
-      #   id: apply-run
-      #   with:
-      #     workspace: "java-devops"
-      #     configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
-
-      # - name: Apply
-      #   uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
-      #   if: fromJSON(steps.apply-run.outputs.payload).data.attributes.actions.IsConfirmable
-      #   id: apply
-      #   with:
-      #     run: ${{ steps.apply-run.outputs.run_id }}
-      #     comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -93,6 +66,12 @@ jobs:
         run: |
           cd terraform
           terraform apply -auto-approve
+
+      - name: Terraform Output
+        run: |
+          cd terraform
+          cluster_name=$(terraform output cluster_name)
+          echo "cluster_name=$cluster_name" >> $GITHUB_ENV
 
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
