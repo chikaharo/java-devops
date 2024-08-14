@@ -12,11 +12,7 @@ on:
         description: "Specifies the GitHub deployment environment."
         required: false
         type: string
-        default: null
-    secrets:
-      cli_config_credentials_token:
-        description: "cli config credentials token"
-        required: true
+        default: "dev"
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
@@ -29,13 +25,13 @@ jobs:
         shell: bash
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2.0.2
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ inputs.tf_version }}
-          cli_config_credentials_token: ${{ secrets.cli_config_credentials_token }}
+          cli_config_credentials_token: ${{ secrets.TFC_API_TOKEN }}
 
       - name: Terraform Init
         id: init
