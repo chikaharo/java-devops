@@ -39,15 +39,21 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: |
+          cd terraform
+          terraform init
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate
+        run: |
+          cd terraform
+          terraform validate
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan
+        run: |
+          cd terraform
+          terraform plan
         continue-on-error: true
 
       - name: Terraform Plan Status
@@ -55,10 +61,12 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: |
+          cd terraform
+          terraform apply -auto-approve
 
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::357171621133:role/github-oidc-role
           role-session-name: samplerolesession
