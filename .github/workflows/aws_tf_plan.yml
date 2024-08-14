@@ -13,10 +13,10 @@ on:
         required: false
         type: string
         default: "dev"
-    # secrets:
-    #   cli_config_credentials_token:
-    #     description: "cli config credentials token"
-    #     required: true
+    secrets:
+      cli_config_credentials_token:
+        description: "cli config credentials token"
+        required: true
 
 jobs:
   build-plan:

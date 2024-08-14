@@ -13,6 +13,10 @@ on:
         required: false
         type: string
         default: "dev"
+    secrets:
+      cli_config_credentials_token:
+        description: "cli config credentials token"
+        required: true
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
