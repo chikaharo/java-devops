@@ -51,7 +51,7 @@ on:
 
 jobs:
   Plan:
-    uses: ./.github/workflows/aws_tf_plan.yml
+    uses: RekhuGopal/AWS_EKS_Labs/.github/workflows/aws_tf_plan.yml@main
     with:
       gh_environment: dev
     secrets:
