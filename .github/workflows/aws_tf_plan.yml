@@ -17,17 +17,25 @@ on:
       cli_config_credentials_token:
         description: "cli config credentials token"
         required: true
+env:
+  TF_CLOUD_ORGANIZATION: "HuyDinh"
+  TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
+  TF_WORKSPACE: "java-depvops"
+  CONFIG_DIRECTORY: "./"
 
 jobs:
   build-plan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     environment: ${{ inputs.gh_environment }}
     defaults:
       run:
         shell: bash
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
