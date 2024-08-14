@@ -19,7 +19,7 @@ on:
         required: true
 env:
   TF_CLOUD_ORGANIZATION: "HuyDinh"
-  TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
+  TF_API_TOKEN: "${{ secrets.TFC_API_TOKEN }}"
   TF_WORKSPACE: "java-depvops"
   CONFIG_DIRECTORY: "./"
 

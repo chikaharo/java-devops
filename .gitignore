@@ -31,7 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
-.github/aws_tf_apply.yml
-.github/aws_tf_plan.yml
-.github/eks.yml
+# .github/aws_tf_apply.yml
+# .github/aws_tf_plan.yml
+# .github/eks.yml
 .github/maven.yml
+.github/terraform-plan.yml
