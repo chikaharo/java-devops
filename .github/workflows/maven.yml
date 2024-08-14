@@ -50,7 +50,7 @@ jobs:
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
 
   Plan:
-    uses: .github/workflows/aws_tf_plan.yml@main
+    uses: ./.github/workflows/aws_tf_plan.yml@main
     with:
       gh_environment: dev
     secrets:
