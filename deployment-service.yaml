@@ -12,9 +12,12 @@ spec:
       labels:
         app: boardgame
     spec:
+      imagePullSecrets:
+        - name: my-ecr-key
       containers:
         - name: boardgame
           image: $(ECR_REGISTRY)/$(ECR_REPOSITORY):$(IMAGE_TAG)
+          # image: 117001856078.dkr.ecr.ap-southeast-1.amazonaws.com/boardgame:1.0.0.m1
           imagePullPolicy: Always
           resources:
             requests:
@@ -24,18 +27,19 @@ spec:
               memory: "128Mi"
               cpu: "200m"
           ports:
-            - containerPort: 8080 # The port that the container is running on in the cluster
+            - containerPort: 8080
 
 ---
-apiVersion: v1 # Kubernetes API version
-kind: Service # Kubernetes resource kind we are creating
-metadata: # Metadata of the resource kind we are creating
-  name: boardgame-ssvc
+apiVersion: v1
+kind: Service
+metadata:
+  name: boardgame-svc
 spec:
   selector:
     app: boardgame
   ports:
     - protocol: "TCP"
-      port: 80
+      port: 8080
       targetPort: 8080
-  type: LoadBalancer # type of the service.
+      nodePort: 30060
+  type: LoadBalancer
