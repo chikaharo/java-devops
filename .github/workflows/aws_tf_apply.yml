@@ -23,6 +23,8 @@ permissions:
 jobs:
   apply-plan:
     runs-on: ubuntu-latest
+    outputs:
+      cluster_name: ${{ steps.terraform_output.outputs.cluster_name }}
     environment: ${{ inputs.gh_environment }}
     permissions:
       contents: read
@@ -68,11 +70,13 @@ jobs:
           terraform apply -auto-approve
 
       - name: Terraform Output
+        id: terraform_output
         run: |
           cd terraform
+          terraform output cluster_name
           cluster_name=$(terraform output cluster_name)
-          echo $cluster_name
-          echo "cluster_name=$cluster_name" >> $GITHUB_ENV
+          echo "cluster_name=$(terraform output cluster_name)" >> $GITHUB_ENV
+          echo "::set-output name=cluster_name::$cluster_name"
 
       # - name: configure aws credentials
       #   uses: aws-actions/configure-aws-credentials@v4

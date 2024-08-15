@@ -107,7 +107,7 @@ jobs:
       - name: Update kube config
         # env:
         #   EKS_CLUSTER_NAME: ${{ steps.apply-terraform.outputs.cluster_name }}
-        run: aws eks update-kubeconfig --name ${{ env.cluster_name }} --region ap-southeast-1
+        run: aws eks update-kubeconfig --name ${{ needs.Plan.outputs.cluster_name }} --region ap-southeast-1
 
       - name: Deploy to EKS
         env:
@@ -116,4 +116,4 @@ jobs:
           ECR_REPOSITORY: boardgame
         run: |
           sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment-service.yaml && \
-          kubectl apply -f deployment-service.yaml
+          envsubst < deployment-service.yaml | kubectl apply -f -
