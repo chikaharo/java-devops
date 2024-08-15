@@ -16,7 +16,8 @@ spec:
       #   - name: my-ecr-key
       containers:
         - name: boardgame
-          image: $(ECR_REGISTRY)/$(ECR_REPOSITORY):$(IMAGE_TAG)
+          image: DOCKER_IMAGE
+          # image: $(ECR_REGISTRY)/$(ECR_REPOSITORY):$(IMAGE_TAG)
           # image: 117001856078.dkr.ecr.ap-southeast-1.amazonaws.com/boardgame:1.0.0.m1
           imagePullPolicy: Always
           resources:
