@@ -78,7 +78,7 @@ jobs:
         run: |
           cd terraform
           terraform output cluster_name
-          cluster_name=$(terraform output cluster_name)
+          cluster_name=$(terraform output cluster_name | tr -d '"')
           echo "cluster_name=$cluster_name" >> $GITHUB_OUTPUT
 
       # - name: configure aws credentials
