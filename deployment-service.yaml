@@ -12,8 +12,8 @@ spec:
       labels:
         app: boardgame
     spec:
-      imagePullSecrets:
-        - name: my-ecr-key
+      # imagePullSecrets:
+      #   - name: my-ecr-key
       containers:
         - name: boardgame
           image: $(ECR_REGISTRY)/$(ECR_REPOSITORY):$(IMAGE_TAG)
