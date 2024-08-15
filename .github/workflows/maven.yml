@@ -107,7 +107,9 @@ jobs:
       - name: Update kube config
         env:
           EKS_CLUSTER_NAME: ${{ needs.apply.outputs.cluster_name }}
-        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ap-southeast-1
+        run: |
+          echo $EKS_CLUSTER_NAME
+          aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ap-southeast-1
 
       - name: Deploy to EKS
         env:
