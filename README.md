@@ -1,26 +1,18 @@
-# BoardgameListingWebApp
+# Cloud Native Boardgame Java App on Amazon EKS with Terraform, Github action
 
 ## Description
 
 **Board Game Database Full-Stack Web Application.**
-This web application displays lists of board games and their reviews. While anyone can view the board game lists and reviews, they are required to log in to add/ edit the board games and their reviews. The 'users' have the authority to add board games to the list and add reviews, and the 'managers' have the authority to edit/ delete the reviews on top of the authorities of users.  
+Deploy boardgame - the web application displays lists of board games and their reviews. While anyone can view the board game lists and reviews, they are required to log in to add/ edit the board games and their reviews. The 'users' have the authority to add board games to the list and add reviews, and the 'managers' have the authority to edit/ delete the reviews on top of the authorities of users.  
 
 ## Technologies
 
 - Java
 - Spring Boot
-- Amazon Web Services(AWS) EC2
-- Thymeleaf
-- Thymeleaf Fragments
-- HTML5
-- CSS
+- Amazon Web Services(AWS) EC2, EKS
+- Terraform
 - JavaScript
 - Spring MVC
-- JDBC
-- H2 Database Engine (In-memory)
-- JUnit test framework
-- Spring Security
-- Twitter Bootstrap
 - Maven
 
 ## Features
@@ -40,14 +32,55 @@ This web application displays lists of board games and their reviews. While anyo
 - JDBC for database connectivity and interaction
 - CRUD (Create, Read, Update, Delete) operations for managing data in the database
 - Schema.sql file to customize the schema and input initial data
-- Thymeleaf Fragments to reduce redundancy of repeating HTML elements (head, footer, navigation)
+- Thymeleaf Fragments to reduce redundancy of repeating HTML elements (head, footer, navigation)'
 
-## How to Run
+## Prerequisites
+- AWS account with the IAM permissions to create EKS clusters
+- AWS CLI installed and configured
+- AWS IAM Authenticator installed on your machine
+- kubectl installed on your machine
+- Docker installed and configured on your machine
+- Terraform installed on your machine
+- Java 11+ installed on your machine
 
-1. Clone the repository
-2. Open the project in your IDE of choice
-3. Run the application
-4. To use initial user data, use the following credentials.
+## Create an EKS cluster using Terraform
+To deploy the stack to AWS EKS, we need to create a cluster. So let's begin by creating a cluster using Terraform.
+
+### Create a cluster
+Ensure you have configured your AWS CLI and IAM Authenticator to use the correct AWS account. If not, run and following:
+```
+# Visit https://console.aws.amazon.com/iam/home?#/security_credentials for creating access keys
+aws configure
+```
+Initialize, plan and apply the following Terraform configuration:
+
+```
+cd terraform
+# download modules and providers. Initialize state.
+terraform init
+# see a preview of what will be done
+terraform plan
+# apply the changes
+terraform apply
+```
+Confirm by typing yes when prompted. This will take a while (15-20 minutes), so sit back and have a coffee or contemplate
+Once the EKS cluster is ready, you will see the output variables printed on the console.
+
+## Deploy the microservice stack to EKS
+Config kubeconfig file
+```
+aws eks update-kubeconfig --region ap-southeast-1 --name $(terraform ouput cluster_name)
+```
+Deploy to AWS EKS
+```
+kubectl apply -f deployment-service.yaml
+```
+<img width="660" alt="image" src="https://github.com/user-attachments/assets/4785cd67-237a-44bf-8942-ecc1ad7ccc44">
+
+## Run application
+
+1. Access application through browser from your cluster external IP and port 30060
+2. To use initial user data, use the following credentials.
   - username: bugs    |     password: bunny (user role)
   - username: daffy   |     password: duck  (manager role)
-5. You can also sign-up as a new user and customize your role to play with the application! 😊
+3. You can also sign-up as a new user and customize your role to play with the application! 😊
