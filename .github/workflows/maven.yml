@@ -117,7 +117,6 @@ jobs:
           IMAGE_TAG: 1.0.0
           ECR_REPOSITORY: boardgame
         run: |
-          sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment-service.yaml && \
           envsubst < deployment-service.yaml | kubectl apply -f -
 
       - name: Check pods
