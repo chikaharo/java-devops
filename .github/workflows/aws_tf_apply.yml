@@ -51,16 +51,16 @@ jobs:
           cd terraform
           terraform validate
 
-      - name: Terraform Plan
-        id: plan
-        run: |
-          cd terraform
-          terraform plan
-        continue-on-error: true
+      # - name: Terraform Plan
+      #   id: plan
+      #   run: |
+      #     cd terraform
+      #     terraform plan
+      #   continue-on-error: true
 
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
+      # - name: Terraform Plan Status
+      #   if: steps.plan.outcome == 'failure'
+      #   run: exit 1
 
       - name: Terraform Apply
         run: |
@@ -71,6 +71,7 @@ jobs:
         run: |
           cd terraform
           cluster_name=$(terraform output cluster_name)
+          echo $cluster_name
           echo "cluster_name=$cluster_name" >> $GITHUB_ENV
 
       - name: configure aws credentials

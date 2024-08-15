@@ -15,7 +15,7 @@ spec:
       containers:
         - name: boardgame
           image: boardgame:0.0.4
-          # imagePullPolicy: Always
+          imagePullPolicy: Always
           resources:
             requests:
               memory: "64Mi"

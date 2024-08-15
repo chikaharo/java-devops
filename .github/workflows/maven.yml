@@ -64,6 +64,7 @@ jobs:
       cli_config_credentials_token: ${{ secrets.TFC_API_TOKEN }}
 
   deployment:
+    needs: Apply
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -106,7 +107,7 @@ jobs:
       - name: Update kube config
         # env:
         #   EKS_CLUSTER_NAME: ${{ steps.apply-terraform.outputs.cluster_name }}
-        run: aws eks update-kubeconfig --name $cluster_name --region ap-southeast-1
+        run: aws eks update-kubeconfig --name ${{ env.cluster_name }} --region ap-southeast-1
 
       - name: Deploy to EKS
         env:
