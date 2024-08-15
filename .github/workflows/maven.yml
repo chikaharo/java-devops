@@ -48,15 +48,15 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-  Plan:
+  plan:
     uses: ./.github/workflows/aws_tf_plan.yml
     with:
       gh_environment: dev
     secrets:
       cli_config_credentials_token: ${{ secrets.TFC_API_TOKEN }}
 
-  Apply:
-    needs: Plan
+  apply:
+    needs: plan
     uses: ./.github/workflows/aws_tf_apply.yml
     with:
       gh_environment: dev
@@ -64,7 +64,7 @@ jobs:
       cli_config_credentials_token: ${{ secrets.TFC_API_TOKEN }}
 
   deployment:
-    needs: Apply
+    needs: apply
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -106,7 +106,7 @@ jobs:
 
       - name: Update kube config
         env:
-          EKS_CLUSTER_NAME: ${{ needs.Plan.outputs.cluster_name }}
+          EKS_CLUSTER_NAME: ${{ needs.apply.outputs.cluster_name }}
         run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ap-southeast-1
 
       - name: Deploy to EKS
