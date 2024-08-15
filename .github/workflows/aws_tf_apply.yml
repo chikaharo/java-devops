@@ -13,6 +13,10 @@ on:
         required: false
         type: string
         default: "dev"
+    outputs:
+      cluster_name:
+        description: "The cluster name output"
+        value: ${{ jobs.apply-plan.outputs.cluster_name }}
     secrets:
       cli_config_credentials_token:
         description: "cli config credentials token"
